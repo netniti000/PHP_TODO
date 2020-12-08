@@ -1,6 +1,7 @@
 <?php
 // Controllerは処理の流れを制御する処理
 require_once('./../../model/Todo.php');
+require_once('./../../validation/TodoValidation.php');
 
 class TodoController {
     public function index(){
@@ -21,17 +22,20 @@ class TodoController {
         $title = $_POST['title'];
         $detail = $_POST['detail'];
 
-        $error_msgs = array();
-        if(empty($title)) {
-            $error_msgs[] = "タイトルが空です";
-        }
-        if(count($error_msgs) > 0){
-            $params = sprintf("?title=%s&detail=%s", $title, $detail);
+        $data = array(
+            "title" => $_POST['title'],
+            "detail" => $_POST['detail']
+        );
+
+        $validation = new TodoValidation;
+        $validation->setData($data);
+        if($validation->check() === false) {
+            $params = sprintf("?title=%s&detail=%s", $_POST['title'], $_POST['detail']);
             header(sprintf("Location: ./new.php%s", $params));
         }
 
         exit;
-        
+
         $todo = new Todo;
         //setTitleというメソッドをTodoクラスに追加する。setTitleを通してTodoクラスのオブジェクトのtitleというプロパティに
         //POSTから渡ってきた$titleを入れる。
