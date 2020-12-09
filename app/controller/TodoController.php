@@ -30,8 +30,14 @@ class TodoController {
         $validation = new TodoValidation;
         $validation->setData($data);
         if($validation->check() === false) {
+            $error_msgs = $validation->getErrorMessages();
+
+            session_start();
+            $_SESSION['error_msgs'] = $error_msgs;
+
             $params = sprintf("?title=%s&detail=%s", $_POST['title'], $_POST['detail']);
             header(sprintf("Location: ./new.php%s", $params));
+            return;
         }
 
         exit;
