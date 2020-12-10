@@ -23,7 +23,6 @@ session_start();
 $error_msgs = $_SESSION['error_msgs'];
 unset($_SESSION['error_msgs']);
 
-var_dump($error_msgs);
 
 ?>
 

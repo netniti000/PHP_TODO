@@ -40,16 +40,16 @@ class TodoController {
             return;
         }
 
-        exit;
+        $valid_data = $validation->getData();
 
         $todo = new Todo;
         //setTitleというメソッドをTodoクラスに追加する。setTitleを通してTodoクラスのオブジェクトのtitleというプロパティに
         //POSTから渡ってきた$titleを入れる。
-        $todo->setTitle($title);
-        $todo->setDetail($detail);
+        $todo->setTitle($valid_data['title']);
+        $todo->setDetail($valid_data['detail']);
         $result = $todo->save();
 
-        $result = false;
+        
         if($result === false) {
             //?マークを付けることでGETパラメータにすることができる
             $params = sprintf("?title=%s&detail=%s", $title, $detail);
